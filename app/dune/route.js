@@ -6,7 +6,9 @@ export async function GET(request) {
   const id = searchParams.get("query_id");
   const key = process.env.DUNE_API_KEY;
   const url = `https://api.dune.com/api/v1/query/${id}/results?api_key=${key}`;
-  const res = await fetch(url, { next: { revalidate: 3600 } });
+  const res = await fetch(url, {
+    "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=3600",
+  });
   const data = await res.json();
   return Response.json(data);
 }
